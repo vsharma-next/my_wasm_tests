@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      //   WebAssembly.instantiateStreaming(fetch('./wasm_files/simple.wasm')).then(
+      //     (obj) => obj.instance.exports.exported_func()
+      //   );
+
+      //   let myfunc;
+      //   const importObject = {
+      //     imports: { imported_func: (arg) => console.log(arg) },
+      //   };
+
+      //   THE MORE TRRADITIONAL WAY OF LOADING WebAssembly
+
+      //   const test = WebAssembly.instantiateStreaming(
+      //     fetch('./wasm_files/simple.wasm'),
+      //     importObject
+      //   )
+      //     .then((obj) => {
+      //       console.log(obj);
+      //       myfunc = obj.instance.exports.exported_func;
+      //     })
+      //     .then(() => {
+      //       myfunc();
+      //     });
+
+      const importObj = {
+        imports: { imported_func: (arg) => console.log(arg) },
+      };
+
+      //   The more detailed way of loading a web assembly file.
+      fetch('./wasm_files/simple.wasm')
+        .then((response) => {
+          return response.arrayBuffer();
+        })
+        .then((buffer) => {
+          return WebAssembly.instantiate(buffer, importObj);
+        })
+        .then((obj) => {
+          console.log(obj);
+        });
+    </script>
+  </body>
+</html>
